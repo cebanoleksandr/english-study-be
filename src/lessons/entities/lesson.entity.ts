@@ -1,8 +1,10 @@
+import { User } from 'src/users/entities/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity('lessons')
@@ -35,4 +37,7 @@ export class LessonEntity {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @ManyToOne(() => User, (user) => user.lessons, { onDelete: 'CASCADE' })
+  user: User;
 }
