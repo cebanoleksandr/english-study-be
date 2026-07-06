@@ -11,6 +11,7 @@ import {
 import { LessonsService } from './lessons.service';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { SubmitQuizDto } from './dto/submit-quiz.dto';
 
 @Controller('lessons')
 export class LessonsController {
@@ -33,5 +34,15 @@ export class LessonsController {
   @Get(':id')
   async getLessonById(@Param('id') id: string) {
     return this.lessonsService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/quiz/submit')
+  @UsePipes(new ValidationPipe())
+  async submitQuiz(
+    @Param('id') id: string,
+    @Body() submitQuizDto: SubmitQuizDto,
+  ) {
+    return this.lessonsService.submitQuiz(id, submitQuizDto);
   }
 }
